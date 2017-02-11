@@ -6,14 +6,14 @@
         // function will be called when web resource is loaded on Form.
         $(document).ready(function () 
         {
-            ConvertDropDownToCheckBoxList();
+            ConvertOptionSettoCheckBox();
         });
 
         //Coverts option list to checkbox list.
-function ConvertDropDownToCheckBoxList() 
+function ConvertOptionSettoCheckBox() 
 {
     var dropdownOptions = parent.Xrm.Page.getAttribute("OptionSetFieldOntheForm").getOptions();
-    var selectedValue = parent.Xrm.Page.getAttribute("ValueFieldForTheOptionSet").getValue();
+    var OptionSetValue = parent.Xrm.Page.getAttribute("ValueFieldForTheOptionSet").getValue();
 
     $(dropdownOptions).each(function (i, e) 
     {
@@ -22,7 +22,7 @@ function ConvertDropDownToCheckBoxList()
         var isChecked = false;
         if (rText != '') 
         {
-            if (selectedValue != null && selectedValue.indexOf(rvalue) != -1)
+            if (OptionSetValue != null && OptionSetValue.indexOf(rvalue) != -1)
                 isChecked = true;
             var checkbox = "<label><input type=\"checkbox\"  name =\"r\">" + rText  + "<br></label>"
             $(checkbox)
@@ -32,48 +32,48 @@ function ConvertDropDownToCheckBoxList()
                 .on('click', function () 
                 {
                     //To Set Option Set Values to the related field
-                    var selectedOption = parent.Xrm.Page.getAttribute("ValueFieldForTheOptionSet").getValue();
+                    var ValueField = parent.Xrm.Page.getAttribute("ValueFieldForTheOptionSet").getValue();
                     if ($(this).find('input').is(':checked')) 
                     {
-                        if (selectedOption == null)
-                            selectedOption = rvalue+"";
+                        if (ValueField == null)
+                            ValueField = rvalue+"";
                         else
-                            selectedOption = selectedOption + "," + rvalue
+                            ValueField = ValueField + "," + rvalue
                     }
                     else //Removes the value from the field if it is unchecked
                     {
-                        var tempSelected = rvalue + ",";
-                        if (selectedOption != null) 
+                        var Value = rvalue + ",";
+                        if (ValueField != null) 
                         {
-                            if (selectedOption.indexOf(tempSelected) != -1)
-                                selectedOption = selectedOption.replace(tempSelected, "");
+                            if (ValueField.indexOf(Value) != -1)
+                                ValueField = ValueField.replace(Value, "");
                             else
-                                selectedOption = selectedOption.replace(rvalue, "")
+                                ValueField = ValueField.replace(rvalue, "")
                         }
                     }
-                    parent.Xrm.Page.getAttribute("l1s_trainingmodulesvalues").setValue(selectedOption);
+                    parent.Xrm.Page.getAttribute("ValueFieldForTheOptionSet").setValue(ValueField);
 
                     //To Set Option Set Select Text to the related field
-                    var selectedYear = parent.Xrm.Page.getAttribute("l1s_trainingmodules").getValue();
+                    var TextField = parent.Xrm.Page.getAttribute("TextFieldForTheOptionSet").getValue();
                     if ($(this).find('input').is(':checked')) 
                     {
-                        if (selectedYear == null)
-                            selectedYear = rText+"";
+                        if (TextField == null)
+                            TextField = rText+"";
                         else
-                            selectedYear = selectedYear + "," + rText
+                            TextField = TextField + "," + rText
                     }
                     else //Removes the value from the field if it is unchecked
                     {
-                        var tempSelectedtext = rText + ",";
-                        if (selectedYear != null) 
+                        var Text = rText + ",";
+                        if (TextField != null) 
                         {
-                            if (selectedYear.indexOf(tempSelectedtext) != -1)
-                                selectedYear = selectedYear.replace(tempSelectedtext, "");
+                            if (TextField.indexOf(Text) != -1)
+                                TextField = TextField.replace(Text, "");
                             else
-                                selectedYear = selectedYear.replace(rText, "");
+                                TextField = TextField.replace(rText, "");
                         }
                     }
-                    parent.Xrm.Page.getAttribute("l1s_trainingmodules").setValue(selectedYear);
+                    parent.Xrm.Page.getAttribute("TextFieldForTheOptionSet").setValue(TextField);
 
                 })
                 .appendTo(checkboxList);
